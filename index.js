@@ -56,6 +56,9 @@ const guess = (game, guess) => {
   }
 };
 
+/**
+ * Index route, generate a new game then redirect to that games page
+ */
 app.get('/', (req, res) => {
   const uuid = uuidV4();
   const word = getNewWord();
@@ -63,8 +66,14 @@ app.get('/', (req, res) => {
   res.redirect('/'+uuid);
 });
 
+/**
+ * Page for a game
+ */
 app.get('/:uuid', (req, res) => res.send(games[req.params.uuid]));
 
+/**
+ * Guess route, make a guess for a game then redirect to that games page
+ */
 app.get('/:uuid/:guess', (req, res) => {
   guess(games[req.params.uuid], req.params.guess);
   res.redirect('/'+req.params.uuid);
