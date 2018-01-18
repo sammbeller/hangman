@@ -14,6 +14,20 @@ const uuidV4 = require('uuid/v4'); // Random uuid
 const games = {};
 
 /**
+ * Render the word for display using underscores for letters that have not yet been guessed
+ */
+const renderDisplayWord = (game) => {
+  console.log("Rendering display word for game");
+  return Array.prototype.map.call(game.word, (character, index) => {
+    if (game.markedLetters[index]) {
+      return character;
+    } else {
+      return '_';
+    }
+  }).join(' ');
+};
+
+/**
  * Generate a new word
  */
 const getNewWord = () => {
@@ -57,9 +71,17 @@ const guess = (game, guess) => {
 };
 
 /**
+ * Request for favicon, respond with nothing
+ */
+app.get('/favicon.ico', (req, res) => {
+  res.status(200);
+});
+
+/**
  * Index route, generate a new game then redirect to that games page
  */
 app.get('/', (req, res) => {
+  console.log('Received request for ' + req.url);
   const uuid = uuidV4();
   const word = getNewWord();
   startGame(uuid, word);
@@ -69,12 +91,19 @@ app.get('/', (req, res) => {
 /**
  * Page for a game
  */
-app.get('/:uuid', (req, res) => res.send(games[req.params.uuid]));
+app.get('/:uuid', (req, res) => {
+  console.log('Received request for ' + req.url);
+  res.send({
+    game: games[req.params.uuid], 
+    displayWord: renderDisplayWord(games[req.params.uuid])
+  })
+});
 
 /**
  * Guess route, make a guess for a game then redirect to that games page
  */
 app.get('/:uuid/:guess', (req, res) => {
+  console.log('Received request for ' + req.url);
   guess(games[req.params.uuid], req.params.guess);
   res.redirect('/'+req.params.uuid);
 });
