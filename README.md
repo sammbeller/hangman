@@ -13,3 +13,6 @@
 * [ ] Get real words
 * [ ] Should I update timestamp on activity?
 * [ ] convert games to Map
+* [ ] Add guessedLetters Set
+* [ ] Add methods determining correctly/incorrectly guessed letters
+* [ ] convert isWon and isLost to use guessedLetters
