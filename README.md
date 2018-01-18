@@ -7,4 +7,7 @@
 * [ ] Use uuid to get random new word
 * [ ] Do I need to do anything if someone guesses more than one letter?
 * [X] Add isWon method
-* [ ] Add isLost method
+* [X] Add isLost method
+* [ ] Track wins
+* [ ] Track losses
+* [ ] Get real words
