@@ -36,7 +36,25 @@ const startGame = (uuid, word) => {
   };
 };
 
+/**
+ * Guess a letter
+ * This method iterates through game.word, comparing elements to guess
+ * If none match game.incorrectGuesses is incremented
+ * Else the corresponding index in game.markedLetters is set to true
+ */
+const guess = (game, guess) => {
+  let correctGuess = false;
+  for (let i = 0; i < game.word.length; i++) {
+    if (game.word[i] === guess) {
+      game.markedLetters[i] = true;
+      correctGuess = true;
+    }
+  }
 
+  if (!correctGuess) {
+    game.incorrectGuesses++;
+  }
+};
 
 app.get('/', (req, res) => {
   const uuid = uuidV4();
@@ -44,6 +62,12 @@ app.get('/', (req, res) => {
   startGame(uuid, word);
   res.redirect('/'+uuid);
 });
+
 app.get('/:uuid', (req, res) => res.send(games[req.params.uuid]));
+
+app.get('/:uuid/:guess', (req, res) => {
+  guess(games[req.params.uuid], req.params.guess);
+  res.redirect('/'+req.params.uuid);
+});
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
