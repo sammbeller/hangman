@@ -11,3 +11,4 @@
 * [ ] Track wins
 * [ ] Track losses
 * [ ] Get real words
+* [ ] Should I update timestamp on activity?
