@@ -13,6 +13,9 @@ const uuidV4 = require('uuid/v4'); // Random uuid
  */
 const games = {};
 
+/**
+ * Generate a new word
+ */
 const getNewWord = () => {
   return 'word';
 };
@@ -32,6 +35,8 @@ const startGame = (uuid, word) => {
     markedLetters: Array(word.length).fill(false)
   };
 };
+
+
 
 app.get('/', (req, res) => {
   const uuid = uuidV4();
