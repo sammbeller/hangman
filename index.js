@@ -17,7 +17,6 @@ const games = {};
  * Render the word for display using underscores for letters that have not yet been guessed
  */
 const renderDisplayWord = (game) => {
-  console.log("Rendering display word for game");
   return Array.prototype.map.call(game.word, (character, index) => {
     if (game.markedLetters[index]) {
       return character;
@@ -79,6 +78,14 @@ const isWon = (game) => {
 };
 
 /**
+ * Test if a game is lost. Does not update the game
+ * @returns {boolean} - True if game.incorrectGuesses == 10, else false
+ */
+const isLost = (game) => {
+  return game.incorrectGuesses == 10;
+};
+
+/**
  * Request for favicon, respond with nothing
  */
 app.get('/favicon.ico', (req, res) => {
@@ -104,7 +111,8 @@ app.get('/:uuid', (req, res) => {
   res.send({
     game: games[req.params.uuid], 
     displayWord: renderDisplayWord(games[req.params.uuid]),
-    won: isWon(games[req.params.uuid])
+    won: isWon(games[req.params.uuid]),
+    lost: isLost(games[req.params.uuid])
   })
 });
 
@@ -112,8 +120,17 @@ app.get('/:uuid', (req, res) => {
  * Guess route, make a guess for a game then redirect to that game's page
  */
 app.get('/:uuid/:guess', (req, res) => {
-  console.log('Received guess for game ' + req.params.uuid + ' and guess ' + req.params.guess);
-  guess(games[req.params.uuid], req.params.guess);
+
+  const game = games[req.params.uuid];
+
+  if (isWon(game)) {
+    console.log("Received guess for already won game, redirecting");
+  } else if (isLost(game)) {
+    console.log("Received guess for already lost game, redirecting");
+  } else {
+    console.log('Received guess for game ' + req.params.uuid + ' and guess ' + req.params.guess);
+    guess(game, req.params.guess);
+  }
   res.redirect('/'+req.params.uuid);
 });
 
