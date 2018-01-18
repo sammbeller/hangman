@@ -5,3 +5,4 @@
   * [ ] Route
 * [ ] Cleanup games periodically
 * [ ] Use uuid to get random new word
+* [ ] Do I need to do anything if someone guesses more than one letter?
