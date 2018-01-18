@@ -108,12 +108,21 @@ app.get('/', (req, res) => {
  */
 app.get('/:uuid', (req, res) => {
   console.log('Received request for ' + req.url);
-  res.send({
-    game: games[req.params.uuid], 
-    displayWord: renderDisplayWord(games[req.params.uuid]),
-    won: isWon(games[req.params.uuid]),
-    lost: isLost(games[req.params.uuid])
-  })
+
+  const game = games[req.params.uuid];
+
+  if (isWon(game)) {
+    res.send('You won! The word was ' + game.word);
+  } else if (isLost(game)) {
+    res.send('You lost! The word was ' + game.word);
+  } else {
+    res.send({
+      game: games[req.params.uuid], 
+      displayWord: renderDisplayWord(games[req.params.uuid]),
+      won: isWon(games[req.params.uuid]),
+      lost: isLost(games[req.params.uuid])
+    })
+  }
 });
 
 /**
