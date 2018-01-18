@@ -109,10 +109,10 @@ app.get('/:uuid', (req, res) => {
 });
 
 /**
- * Guess route, make a guess for a game then redirect to that games page
+ * Guess route, make a guess for a game then redirect to that game's page
  */
 app.get('/:uuid/:guess', (req, res) => {
-  console.log('Received request for ' + req.url);
+  console.log('Received guess for game ' + req.params.uuid + ' and guess ' + req.params.guess);
   guess(games[req.params.uuid], req.params.guess);
   res.redirect('/'+req.params.uuid);
 });
