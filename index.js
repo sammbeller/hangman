@@ -8,10 +8,11 @@ const startGame = (uuid) => {
   console.log("Starting game with uuid " + uuid);
   games[uuid] = {
     word: 'word',
-    timestamp: Date.now()
+    timestamp: Date.now(),
+    incorrectGuesses: 0,
+    markedLetters: Array('word'.length).fill(false)
   };
 };
-
 
 app.get('/', (req, res) => {
   const uuid = uuidV4();
