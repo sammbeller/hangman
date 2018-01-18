@@ -7,7 +7,8 @@ const games = {};
 const startGame = (uuid) => {
   console.log("Starting game with uuid " + uuid);
   games[uuid] = {
-    word: 'word'
+    word: 'word',
+    timestamp: Date.now()
   };
 };
 
