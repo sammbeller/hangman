@@ -71,6 +71,14 @@ const guess = (game, guess) => {
 };
 
 /**
+ * Test if a game is won. Does not update the game
+ * @returns {boolean} - True if all elements of game.markedLetters are true, else false
+ */
+const isWon = (game) => {
+  return game.markedLetters.reduce((accumulator, currentValue) => accumulator && currentValue, true);
+};
+
+/**
  * Request for favicon, respond with nothing
  */
 app.get('/favicon.ico', (req, res) => {
@@ -95,7 +103,8 @@ app.get('/:uuid', (req, res) => {
   console.log('Received request for ' + req.url);
   res.send({
     game: games[req.params.uuid], 
-    displayWord: renderDisplayWord(games[req.params.uuid])
+    displayWord: renderDisplayWord(games[req.params.uuid]),
+    won: isWon(games[req.params.uuid])
   })
 });
 
