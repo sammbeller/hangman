@@ -8,29 +8,35 @@ const uuidV4 = require('uuid/v4'); // Random uuid
  * {int} timestamp - A timestamp generated using Date.now(), used to clean up old games
  * {int} incorrectGuesses - The number of incorrect guesses for this game so far
  * {boolean[]} markedLetters - An array of booleans of length equal to word indicating whether or not a letter has been correctly guessed
- *  true if correctly guessed
- *  false if not yet guessed
+ *   true if correctly guessed
+ *   false if not yet guessed
  */
 const games = {};
 
+const getNewWord = () => {
+  return 'word';
+};
+
 /**
- * Initialize a new game object with the given uuid
+ * Initialize a new game object with the given uuid and word
  *
  * @param {string} uuid - A uuid to associate with a given game
+ * @param {string} word - The word to be guessed in this new game
  */
-const startGame = (uuid) => {
+const startGame = (uuid, word) => {
   console.log("Starting game with uuid " + uuid);
   games[uuid] = {
-    word: 'word',
+    word: word,
     timestamp: Date.now(),
     incorrectGuesses: 0,
-    markedLetters: Array('word'.length).fill(false)
+    markedLetters: Array(word.length).fill(false)
   };
 };
 
 app.get('/', (req, res) => {
   const uuid = uuidV4();
-  startGame(uuid);
+  const word = getNewWord();
+  startGame(uuid, word);
   res.redirect('/'+uuid);
 });
 app.get('/:uuid', (req, res) => res.send(games[req.params.uuid]));
