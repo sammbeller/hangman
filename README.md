@@ -12,3 +12,4 @@
 * [ ] Track losses
 * [ ] Get real words
 * [ ] Should I update timestamp on activity?
+* [ ] convert games to Map
