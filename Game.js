@@ -39,6 +39,7 @@ module.exports = class Game {
     });
     return missedGuesses;
   }
+
 /**
  * Render the word for display using underscores for letters that have not yet been guessed
  *
