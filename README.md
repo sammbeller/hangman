@@ -5,14 +5,14 @@
   * [ ] Route
 * [ ] Cleanup games periodically
 * [ ] Use uuid to get random new word
-* [ ] Do I need to do anything if someone guesses more than one letter?
+* [X] Do I need to do anything if someone guesses more than one letter?
 * [X] Add isWon method
 * [X] Add isLost method
 * [ ] Track wins
 * [ ] Track losses
 * [ ] Get real words
 * [ ] Should I update timestamp on activity?
-* [ ] convert games to Map
-* [ ] Add guessedLetters Set
+* [X] convert games to Map
+* [X] Add guessedLetters Set
 * [ ] Add methods determining correctly/incorrectly guessed letters
-* [ ] convert isWon and isLost to use guessedLetters
+* [X] convert isWon and isLost to use guessedLetters
