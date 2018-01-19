@@ -1,11 +1,13 @@
+// Imports
 const express = require('express');
 const uuidV4 = require('uuid/v4'); // Random uuid
-const Game = require('./game');
+const Game = require('./Game');
+// Initialize the app and configuration
 const app = express();
-// Configuration
 app.set('view engine', 'pug');
 app.use(express.urlencoded({ extended: true }));
 
+// Game Variables
 // A Map from uuids to Games
 const games = new Map([]);
 // The maximum number of missed guesses after which the user has lost
