@@ -19,21 +19,6 @@ const alphabet = new Set(['A','B','C','D','E','F','G','H',
                           'Q','R','S','T','U','V','W','X',
                           'Y','Z']);
 const game_lifetime = 1000 * 60 * 5;
-/**
- * A method to cleanup games, filters on the amount of time passed between a game's timestamp and now
- */
-const cleanupGames = (lifetime) => {
-  // Use the same time for all comparisons
-  const now = Date.now();
-  Object.entries(games).filter(([uuid, game]) => {
-    if (game.timestamp > now) {
-      console.log("game with uuid " + uuid + " has timestamp greater than now. Removing");
-      return false;
-    } else { 
-      return now - game.timestamp <= lifetime;
-    }
-  })
-};
 
 /**
  * Generate a new word
@@ -84,6 +69,9 @@ app.get('/game', (req, res) => {
 app.get('/game/:uuid', (req, res) => {
   console.log('Received request for ' + req.url);
 
+  if (!games.has(req.params.uuid)) {
+    res.redirect('/404');
+  }
   const game = games.get(req.params.uuid);
 
   if (game.isWon()) {
@@ -115,12 +103,24 @@ app.post('/game/:uuid', (req, res) => {
     try {
       game.guess(req.body.guess, alphabet);
     } catch (e) { // Received an invalid guess
-      // TODO: redirect to error page here
-      res.status(400);
-      res.send(e);
+      res.redirect('/400');
     }
   }
   res.redirect('/game/'+req.params.uuid);
+});
+
+/**
+ * ERROR PAGES
+ */
+
+app.get('/400', (req, res) => {
+  res.status(400);
+  res.send('You tried to make an illegal guess!');
+});
+
+app.get('/404', (req, res) => {
+  res.status(404);
+  res.send('Sorry, the requested game does not exist. It may have been cleaned up.');
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
