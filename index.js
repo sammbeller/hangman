@@ -4,10 +4,10 @@ const Game = require('./game');
 const app = express();
 // Configuration
 app.set('view engine', 'pug');
+app.use(express.urlencoded({ extended: true }));
 
 // A Map from uuids to Games
 const games = new Map([]);
-
 // The maximum number of missed guesses after which the user has lost
 const MAX_MISSED_GUESSES = 10;
 // The alphabet of acceptable letters
@@ -102,7 +102,7 @@ app.get('/game/:uuid', (req, res) => {
 /**
  * Guess route, make a guess for a game then redirect to that game's page
  */
-app.get('/game/:uuid/:guess', (req, res) => {
+app.post('/game/:uuid', (req, res) => {
 
   const game = games.get(req.params.uuid);
 
@@ -111,10 +111,11 @@ app.get('/game/:uuid/:guess', (req, res) => {
   } else if (game.isLost()) {
     console.log("Received guess for already lost game, redirecting");
   } else {
-    console.log('Received guess for game ' + req.params.uuid + ' and guess ' + req.params.guess);
+    console.log('Received guess for game ' + req.params.uuid + ' and guess ' + req.body.guess);
     try {
-      game.guess(req.params.guess, alphabet);
-    } catch (e) {
+      debugger;
+      game.guess(req.body.guess, alphabet);
+    } catch (e) { // Received an invalid guess
       // TODO: redirect to error page here
       res.status(400);
       res.send(e);

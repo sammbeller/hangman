@@ -3,6 +3,8 @@ html
     title= 'Hangman'
   body
     h1= displayWord
-    select
-      each letter in unguessedLetters
-        option(value=letter) #{letter}
+    form(action='' method='post')
+      select(name='guess')
+        each letter in unguessedLetters
+          option(value=letter) #{letter}
+        input(type='submit')
