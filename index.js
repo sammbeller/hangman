@@ -1,36 +1,41 @@
 const express = require('express');
 const app = express();
 const uuidV4 = require('uuid/v4'); // Random uuid
+const Game = require('./game');
+
+// A Map from uuids to Games
+const games = new Map([]);
+
+// The maximum number of missed guesses after which the user has lost
+const MAX_MISSED_GUESSES = 10;
+// The alphabet of acceptable letters
+const alphabet = new Set(['A','B','C','D','E','F','G','H',
+                          'I','J','K','L','M','N','O','P',
+                          'Q','R','S','T','U','V','W','X',
+                          'Y','Z']);
 
 /**
- * An object mapping from uuids to an object with the following shape
- * {string} word - The word to be guessed
- * {int} timestamp - A timestamp generated using Date.now(), used to clean up old games
- * {int} incorrectGuesses - The number of incorrect guesses for this game so far
- * {boolean[]} markedLetters - An array of booleans of length equal to word indicating whether or not a letter has been correctly guessed
- *   true if correctly guessed
- *   false if not yet guessed
+ * A method to cleanup games, filters on the amount of time passed between a game's timestamp and now
  */
-const games = {};
-
-/**
- * Render the word for display using underscores for letters that have not yet been guessed
- */
-const renderDisplayWord = (game) => {
-  return Array.prototype.map.call(game.word, (character, index) => {
-    if (game.markedLetters[index]) {
-      return character;
-    } else {
-      return '_';
+const cleanupGames = (lifetime) => {
+  // Use the same time for all comparisons
+  const now = Date.now();
+  Object.entries(games).filter(([uuid, game]) => {
+    if (game.timestamp > now) {
+      console.log("game with uuid " + uuid + " has timestamp greater than now. Removing");
+      return false;
+    } else { 
+      return now - game.timestamp <= lifetime;
     }
-  }).join(' ');
+  })
 };
+
 
 /**
  * Generate a new word
  */
 const getNewWord = () => {
-  return 'word';
+  return 'WORD';
 };
 
 /**
@@ -41,48 +46,7 @@ const getNewWord = () => {
  */
 const startGame = (uuid, word) => {
   console.log("Starting game with uuid " + uuid);
-  games[uuid] = {
-    word: word,
-    timestamp: Date.now(),
-    incorrectGuesses: 0,
-    markedLetters: Array(word.length).fill(false)
-  };
-};
-
-/**
- * Guess a letter
- * This method iterates through game.word, comparing elements to guess
- * If none match game.incorrectGuesses is incremented
- * Else the corresponding index in game.markedLetters is set to true
- */
-const guess = (game, guess) => {
-  let correctGuess = false;
-  for (let i = 0; i < game.word.length; i++) {
-    if (game.word[i] === guess) {
-      game.markedLetters[i] = true;
-      correctGuess = true;
-    }
-  }
-
-  if (!correctGuess) {
-    game.incorrectGuesses++;
-  }
-};
-
-/**
- * Test if a game is won. Does not update the game
- * @returns {boolean} - True if all elements of game.markedLetters are true, else false
- */
-const isWon = (game) => {
-  return game.markedLetters.reduce((accumulator, currentValue) => accumulator && currentValue, true);
-};
-
-/**
- * Test if a game is lost. Does not update the game
- * @returns {boolean} - True if game.incorrectGuesses == 10, else false
- */
-const isLost = (game) => {
-  return game.incorrectGuesses == 10;
+  games.set(uuid, new Game(word));
 };
 
 /**
@@ -92,35 +56,39 @@ app.get('/favicon.ico', (req, res) => {
   res.status(200);
 });
 
+app.get('/', (req,res) => {
+  res.redirect('/game');
+});
+
 /**
- * Index route, generate a new game then redirect to that games page
+ * Blank game route, generate a new game then redirect to that games page
  */
-app.get('/', (req, res) => {
+app.get('/game', (req, res) => {
   console.log('Received request for ' + req.url);
   const uuid = uuidV4();
   const word = getNewWord();
   startGame(uuid, word);
-  res.redirect('/'+uuid);
+  res.redirect('/game/'+uuid);
 });
 
 /**
  * Page for a game
  */
-app.get('/:uuid', (req, res) => {
+app.get('/game/:uuid', (req, res) => {
   console.log('Received request for ' + req.url);
 
-  const game = games[req.params.uuid];
+  const game = games.get(req.params.uuid);
 
-  if (isWon(game)) {
+  if (game.isWon()) {
     res.send('You won! The word was ' + game.word);
-  } else if (isLost(game)) {
+  } else if (game.isLost()) {
     res.send('You lost! The word was ' + game.word);
   } else {
     res.send({
-      game: games[req.params.uuid], 
-      displayWord: renderDisplayWord(games[req.params.uuid]),
-      won: isWon(games[req.params.uuid]),
-      lost: isLost(games[req.params.uuid])
+      game: game, 
+      displayWord: game.renderDisplayWord(),
+      won: game.isWon(),
+      lost: game.isLost()
     })
   }
 });
@@ -128,19 +96,25 @@ app.get('/:uuid', (req, res) => {
 /**
  * Guess route, make a guess for a game then redirect to that game's page
  */
-app.get('/:uuid/:guess', (req, res) => {
+app.get('/game/:uuid/:guess', (req, res) => {
 
-  const game = games[req.params.uuid];
+  const game = games.get(req.params.uuid);
 
-  if (isWon(game)) {
+  if (game.isWon()) {
     console.log("Received guess for already won game, redirecting");
-  } else if (isLost(game)) {
+  } else if (game.isLost()) {
     console.log("Received guess for already lost game, redirecting");
   } else {
     console.log('Received guess for game ' + req.params.uuid + ' and guess ' + req.params.guess);
-    guess(game, req.params.guess);
+    try {
+      game.guess(req.params.guess, alphabet);
+    } catch (e) {
+      // TODO: redirect to error page here
+      res.status(400);
+      res.send(e);
+    }
   }
-  res.redirect('/'+req.params.uuid);
+  res.redirect('/game/'+req.params.uuid);
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
