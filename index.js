@@ -1,7 +1,9 @@
 const express = require('express');
-const app = express();
 const uuidV4 = require('uuid/v4'); // Random uuid
 const Game = require('./game');
+const app = express();
+// Configuration
+app.set('view engine', 'pug');
 
 // A Map from uuids to Games
 const games = new Map([]);
@@ -84,12 +86,16 @@ app.get('/game/:uuid', (req, res) => {
   } else if (game.isLost()) {
     res.send('You lost! The word was ' + game.word);
   } else {
-    res.send({
-      game: game, 
+//    res.send({
+//      game: game, 
+//      displayWord: game.renderDisplayWord(),
+//      won: game.isWon(),
+//      lost: game.isLost()
+//    });
+     res.render('game.pug', {
       displayWord: game.renderDisplayWord(),
-      won: game.isWon(),
-      lost: game.isLost()
-    })
+      unguessedLetters: [...game.getUnguessedLetters(alphabet)]
+     });
   }
 });
 
