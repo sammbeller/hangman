@@ -113,7 +113,6 @@ app.post('/game/:uuid', (req, res) => {
   } else {
     console.log('Received guess for game ' + req.params.uuid + ' and guess ' + req.body.guess);
     try {
-      debugger;
       game.guess(req.body.guess, alphabet);
     } catch (e) { // Received an invalid guess
       // TODO: redirect to error page here
