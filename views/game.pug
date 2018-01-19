@@ -1,0 +1,8 @@
+html
+  head
+    title= 'Hangman'
+  body
+    h1= displayWord
+    select
+      each letter in unguessedLetters
+        option(value=letter) #{letter}
