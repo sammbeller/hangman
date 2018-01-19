@@ -2,9 +2,13 @@ module.exports = class InMemoryGameHolder {
 
   /**
    * Simple constructor that initializes an empty set
+   *
+   * @param {object} config - A configuration object with the following shape
+   * @param {int} config.lifespan - The maximum lifespan of a game
    */
-  constructor() {
+  constructor({lifespan}={lifespan: 1000*60*5}) {
     this.games = new Map([]);
+    this.lifespan = lifespan;
   }
 
   /**
@@ -35,5 +39,16 @@ module.exports = class InMemoryGameHolder {
    */
   has(uuid) {
     return this.games.has(uuid);
+  }
+
+  /**
+   * Remove all games older than this.lifespan
+   *
+   */
+  cleanup() {
+    const now = Date.now();
+    this.games = [...this.games].filter(([uuid, game]) => {
+      return now - game.timestamp <= lifetime;
+    });
   }
 }
