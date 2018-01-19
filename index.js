@@ -86,15 +86,10 @@ app.get('/game/:uuid', (req, res) => {
   } else if (game.isLost()) {
     res.send('You lost! The word was ' + game.word);
   } else {
-//    res.send({
-//      game: game, 
-//      displayWord: game.renderDisplayWord(),
-//      won: game.isWon(),
-//      lost: game.isLost()
-//    });
      res.render('game.pug', {
       displayWord: game.renderDisplayWord(),
-      unguessedLetters: [...game.getUnguessedLetters(alphabet)]
+      unguessedLetters: [...game.getUnguessedLetters(alphabet)],
+      missedGuesses: game.getMissedGuesses()
      });
   }
 });
