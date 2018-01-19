@@ -9,13 +9,13 @@ app.use(express.urlencoded({ extended: true }));
 // A Map from uuids to Games
 const games = new Map([]);
 // The maximum number of missed guesses after which the user has lost
-const MAX_MISSED_GUESSES = 10;
+const max_missed_guesses = 10;
 // The alphabet of acceptable letters
 const alphabet = new Set(['A','B','C','D','E','F','G','H',
                           'I','J','K','L','M','N','O','P',
                           'Q','R','S','T','U','V','W','X',
                           'Y','Z']);
-
+const game_lifetime = 1000 * 60 * 5;
 /**
  * A method to cleanup games, filters on the amount of time passed between a game's timestamp and now
  */
@@ -31,7 +31,6 @@ const cleanupGames = (lifetime) => {
     }
   })
 };
-
 
 /**
  * Generate a new word
@@ -58,6 +57,9 @@ app.get('/favicon.ico', (req, res) => {
   res.status(200);
 });
 
+/**
+ * Root path, just redirects to /game
+ */
 app.get('/', (req,res) => {
   res.redirect('/game');
 });
