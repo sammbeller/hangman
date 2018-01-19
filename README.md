@@ -1,8 +1,14 @@
+ = INSTALLATION =
+This app uses npm version 5.6.0 and node version 8.9.0
+You may install these however you wish or via the included install.sh script which may be invoked as su
+- sudo ./install.sh
+
+ 
  = TODO =
 * [X] Choose view layer
-* [ ] Failure route when uuid isn't in games
-  * [ ] view
-  * [ ] Route
+* [X] Failure route when uuid isn't in games
+  * [X] view
+  * [X] Route
 * [ ] Cleanup games periodically
 * [ ] Use uuid to get random new word
 * [X] Do I need to do anything if someone guesses more than one letter?
@@ -14,5 +20,5 @@
 * [ ] Should I update timestamp on activity?
 * [X] convert games to Map
 * [X] Add guessedLetters Set
-* [ ] Add methods determining correctly/incorrectly guessed letters
+* [X] Add methods determining correctly/incorrectly guessed letters
 * [X] convert isWon and isLost to use guessedLetters
