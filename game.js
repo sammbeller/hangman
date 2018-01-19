@@ -24,6 +24,11 @@ module.exports = class Game {
     return new Set([...alphabet].filter(letter => !this.guessedLetters.has(letter)));
   }
 
+  /**
+   * Gets the number of missed guesses in this game so far
+   *
+   * @returns {int} - The number of entries in this.guessedLetters not in this.word
+   */
   getMissedGuesses() {
     let missedGuesses = 0;
 
