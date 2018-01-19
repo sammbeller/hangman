@@ -24,6 +24,16 @@ module.exports = class Game {
     return new Set([...alphabet].filter(letter => !this.guessedLetters.has(letter)));
   }
 
+  getMissedGuesses() {
+    let missedGuesses = 0;
+
+    this.guessedLetters.forEach((letter) => {
+      if (!this.word.includes(letter)) {
+        missedGuesses++;
+      }
+    });
+    return missedGuesses;
+  }
 /**
  * Render the word for display using underscores for letters that have not yet been guessed
  *
@@ -73,13 +83,6 @@ module.exports = class Game {
    * @returns {boolean} - True if there are 10 or more missedGuesses, else false
    */
   isLost() {
-    let missedGuesses = 0;
-
-    this.guessedLetters.forEach((letter) => {
-      if (!this.word.includes(letter)) {
-        missedGuesses++;
-      }
-    });
-    return missedGuesses >= 10;
+    return this.getMissedGuesses() >= 10;
   }
 }
