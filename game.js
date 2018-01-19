@@ -14,26 +14,13 @@ module.exports = class Game {
     this.guessedLetters = new Set([]);
   }
 
-  get word() {
-    return this.word;
-  }
-
-  get timestamp() {
-    return this.timestamp;
-  }
-
-  // TODO should I return a defensive copy?
-  get guessedLetters() {
-    return this.guessedLetters;
-  }
-
   /**
    * Get a set of letters that have not yet been guessed
    *
    * @param {Set} alphabet - An alphabet of letters. guessedLetters is a proper subset of this set
    * @returns {Set} - The set unguessedLetters such that unguessedLetters union guessedLetters = alphabet
    */
-  get unguessedLetters(alphabet) {
+  getUnguessedLetters(alphabet) {
     return new Set([...alphabet].filter(letter => !this.guessedLetters.has(letter)));
   }
 
