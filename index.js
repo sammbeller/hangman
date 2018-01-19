@@ -2,14 +2,15 @@
 const express = require('express');
 const uuidV4 = require('uuid/v4'); // Random uuid
 const Game = require('./Game');
+const GameHolder = require('./InMemoryGameHolder');
 // Initialize the app and configuration
 const app = express();
 app.set('view engine', 'pug');
 app.use(express.urlencoded({ extended: true }));
 
 // Game Variables
-// A Map from uuids to Games
-const games = new Map([]);
+// The GameHolder object that will hold all games
+const games = new GameHolder();
 // The maximum number of missed guesses after which the user has lost
 const max_missed_guesses = 10;
 // The alphabet of acceptable letters
@@ -49,7 +50,7 @@ const getNewWord = () => {
  */
 const startGame = (uuid, word) => {
   console.log("Starting game with uuid " + uuid);
-  games.set(uuid, new Game(word));
+  games.add(uuid, new Game(word));
 };
 
 /**
