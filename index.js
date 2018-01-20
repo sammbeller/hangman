@@ -3,6 +3,7 @@ const express = require('express');
 const uuidV4 = require('uuid/v4'); // Random uuid
 const Game = require('./Game');
 const GameHolder = require('./InMemoryGameHolder');
+const WordAccessor = require('./InMemoryWordAccessor');
 // Initialize the app and configuration
 const app = express();
 app.set('view engine', 'pug');
@@ -11,6 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 // Game Variables
 // The GameHolder object that will hold all games
 const games = new GameHolder();
+// The Word Accessor, from which words are retreived
+const words = new WordAccessor();
 // The maximum number of missed guesses after which the user has lost
 const max_missed_guesses = 10;
 // The alphabet of acceptable letters
@@ -24,7 +27,7 @@ const game_lifetime = 1000 * 60 * 5;
  * Generate a new word
  */
 const getNewWord = () => {
-  return 'WORD';
+  return words.getRandomWord();
 };
 
 /**
