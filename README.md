@@ -13,8 +13,8 @@ You may install these however you wish or via the included install.sh script whi
 * [X] Do I need to do anything if someone guesses more than one letter?
 * [X] Add isWon method
 * [X] Add isLost method
-* [ ] Track wins
-* [ ] Track losses
+* [X] Track wins
+* [X] Track losses
 * [X] Get real words
 * [ ] Should I update timestamp on activity?
 * [X] convert games to Map
