@@ -9,7 +9,7 @@ You may install these however you wish or via the included install.sh script whi
 * [X] Failure route when uuid isn't in games
   * [X] view
   * [X] Route
-* [ ] Cleanup games periodically
+* [X] Cleanup games periodically
 * [X] Do I need to do anything if someone guesses more than one letter?
 * [X] Add isWon method
 * [X] Add isLost method

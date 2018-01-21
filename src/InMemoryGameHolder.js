@@ -46,9 +46,10 @@ module.exports = class InMemoryGameHolder {
    *
    */
   cleanup() {
+    console.log('Cleaning up games');
     const now = Date.now();
-    this.games = [...this.games].filter(([uuid, game]) => {
-      return now - game.timestamp <= lifetime;
-    });
+    this.games = new Map([...this.games].filter(([uuid, game]) => {
+      return now - game.timestamp <= this.lifetime;
+    }));
   }
 }

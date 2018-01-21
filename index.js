@@ -22,10 +22,14 @@ const alphabet = new Set(['A','B','C','D','E','F','G','H',
                           'I','J','K','L','M','N','O','P',
                           'Q','R','S','T','U','V','W','X',
                           'Y','Z']);
+// Max lifetime ends up being something like twice this
 const game_lifetime = 1000 * 60 * 5;
 // Track won and lost games
 let games_won = 0;
 let games_lost = 0;
+
+// Cleanup games at regular intervals
+setInterval(games.cleanup.bind(games), game_lifetime);
 
 /**
  * Generate a new word
