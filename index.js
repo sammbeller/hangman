@@ -2,8 +2,8 @@
 const express = require('express');
 const uuidV4 = require('uuid/v4'); // Random uuid
 const Game = require('./Game');
-const GameHolder = require('./InMemoryGameHolder');
-const WordAccessor = require('./InMemoryWordAccessor');
+const GameHolder = require('./src/InMemoryGameHolder');
+const WordAccessor = require('./src/InMemoryWordAccessor');
 // Initialize the app and configuration
 const app = express();
 app.set('view engine', 'pug');
@@ -23,6 +23,9 @@ const alphabet = new Set(['A','B','C','D','E','F','G','H',
                           'Q','R','S','T','U','V','W','X',
                           'Y','Z']);
 const game_lifetime = 1000 * 60 * 5;
+// Track won and lost games
+let games_won = 0;
+let games_lost = 0;
 
 /**
  * Generate a new word
@@ -118,9 +121,9 @@ app.get('/game/:uuid', (req, res) => {
   }
 
   if (game.isWon()) {
-    res.send('You won! The word was ' + game.word);
+    res.send('You won! The word was ' + game.word + ". Games won: " + games_won);
   } else if (game.isLost()) {
-    res.send('You lost! The word was ' + game.word);
+    res.send('You lost! The word was ' + game.word) + ". Games lost: " + games_lost;
   } else {
      res.render('game.pug', {
       displayWord: game.renderDisplayWord(),
@@ -146,6 +149,13 @@ app.post('/game/:uuid', (req, res) => {
     console.log('Received guess for game ' + req.params.uuid + ' and guess ' + req.body.guess);
     try {
       game.guess(req.body.guess, alphabet);
+      // Track if the game is now won or lost
+      if (game.isWon()) {
+        debugger;
+        games_won++;
+      } else if (game.isLost()) {
+        games_lost++;
+      }
     } catch (e) { // Received an invalid guess
       res.redirect('/400');
     }
