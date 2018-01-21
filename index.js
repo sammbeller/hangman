@@ -8,6 +8,7 @@ const WordAccessor = require('./InMemoryWordAccessor');
 const app = express();
 app.set('view engine', 'pug');
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('static'));
 
 // Game Variables
 // The GameHolder object that will hold all games
@@ -72,10 +73,49 @@ app.get('/game', (req, res) => {
 app.get('/game/:uuid', (req, res) => {
   console.log('Received request for ' + req.url);
 
+  // If there's no game, redirect to 404
   if (!games.has(req.params.uuid)) {
     res.redirect('/404');
   }
+
   const game = games.get(req.params.uuid);
+  const missedGuesses = game.getMissedGuesses();
+
+  // Get the background image position based on the number of missed guesses
+  // Default to 100x100 so nothing is shown
+  let backgroundPosition = 'background-position: 100px 100px;';
+  switch(missedGuesses) {
+    case 1:
+      backgroundPosition = 'background-position: -45px -10px;';
+      break;
+    case 2:
+      backgroundPosition = 'background-position: -135px -10px;';
+      break;
+    case 3:
+      backgroundPosition = 'background-position: -220px -10px;';
+      break;
+    case 4:
+      backgroundPosition = 'background-position: -310px -10px;';
+      break;
+    case 5:
+      backgroundPosition = 'background-position: -380px -10px;';
+      break;
+    case 6:
+      backgroundPosition = 'background-position: -10px -95px;';
+      break;
+    case 7:
+      backgroundPosition = 'background-position: -95px -95px;';
+      break;
+    case 8:
+      backgroundPosition = 'background-position: -180px -95px;';
+      break;
+    case 9:
+      backgroundPosition = 'background-position: -265px -95px;';
+      break;
+    case 10:
+      backgroundPosition = 'background-position: -350px -95px;';
+      break;
+  }
 
   if (game.isWon()) {
     res.send('You won! The word was ' + game.word);
@@ -85,7 +125,8 @@ app.get('/game/:uuid', (req, res) => {
      res.render('game.pug', {
       displayWord: game.renderDisplayWord(),
       unguessedLetters: [...game.getUnguessedLetters(alphabet)],
-      missedGuesses: game.getMissedGuesses()
+      missedGuesses: missedGuesses,
+      backgroundPosition
      });
   }
 });

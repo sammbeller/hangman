@@ -2,6 +2,11 @@ html
   head
     title= 'Hangman'
   body
+    div(background-image= '/images/hangman.jpg'
+        alt= missedGuesses
+        style= "width: 80px; height: 80px; background-image: url('/images/hangman.jpg'); background-repeat: no-repeat; " + backgroundPosition
+    )
+    h1= missedGuesses
     h1= displayWord
     form(action='' method='post')
       select(name='guess')
