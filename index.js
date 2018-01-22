@@ -64,7 +64,7 @@ app.get('/', (req,res) => {
 });
 
 /**
- * Blank game route, generate a new game then redirect to that games page
+ * Blank game route, generate a new game then redirect to that game's page
  */
 app.get('/game', (req, res) => {
   console.log('Received request for ' + req.url);
@@ -132,7 +132,7 @@ app.get('/game/:uuid', (req, res) => {
      res.render('game.pug', {
       displayWord: game.renderDisplayWord(),
       unguessedLetters: [...game.getUnguessedLetters(alphabet)],
-      missedGuesses: missedGuesses,
+      missedGuesses,
       backgroundPosition
      });
   }
@@ -155,7 +155,6 @@ app.post('/game/:uuid', (req, res) => {
       game.guess(req.body.guess, alphabet);
       // Track if the game is now won or lost
       if (game.isWon()) {
-        debugger;
         games_won++;
       } else if (game.isLost()) {
         games_lost++;
@@ -170,7 +169,6 @@ app.post('/game/:uuid', (req, res) => {
 /**
  * ERROR PAGES
  */
-
 app.get('/400', (req, res) => {
   res.status(400);
   res.send('You tried to make an illegal guess!');
