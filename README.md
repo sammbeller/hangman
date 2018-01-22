@@ -1,4 +1,4 @@
-#INSTALLATION
+# INSTALLATION
 This app uses npm version 5.6.0 and node version 8.9.0
 You may install these however you wish or via the included install.sh script which may be invoked as su
 - sudo ./install.sh
