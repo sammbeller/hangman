@@ -1,7 +1,7 @@
 // Imports
 const express = require('express');
 const uuidV4 = require('uuid/v4'); // Random uuid
-const Game = require('./Game');
+const Game = require('./src/Game');
 const GameHolder = require('./src/InMemoryGameHolder');
 const WordAccessor = require('./src/InMemoryWordAccessor');
 // Initialize the app and configuration
