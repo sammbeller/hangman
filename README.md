@@ -1,10 +1,10 @@
- = INSTALLATION =
+#INSTALLATION
 This app uses npm version 5.6.0 and node version 8.9.0
 You may install these however you wish or via the included install.sh script which may be invoked as su
 - sudo ./install.sh
 
  
- = TODO =
+# TODO
 * [X] Choose view layer
 * [X] Failure route when uuid isn't in games
   * [X] view
@@ -21,3 +21,4 @@ You may install these however you wish or via the included install.sh script whi
 * [X] Add guessedLetters Set
 * [X] Add methods determining correctly/incorrectly guessed letters
 * [X] convert isWon and isLost to use guessedLetters
+* [ ] Installation script
