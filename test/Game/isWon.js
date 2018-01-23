@@ -1,12 +1,6 @@
 const assert = require('assert');
 const Game = require('../../src/Game');
 
-// The alphabet of acceptable letters
-const alphabet = new Set(['A','B','C','D','E','F','G','H',
-                          'I','J','K','L','M','N','O','P',
-                          'Q','R','S','T','U','V','W','X',
-                          'Y','Z']);
-
 module.exports = () => {
   describe('isWon()', () => {
     // Make sure the game is won when all letters in the word are guessed
