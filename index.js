@@ -143,6 +143,11 @@ app.get('/game/:uuid', (req, res) => {
  */
 app.post('/game/:uuid', (req, res) => {
 
+  // If there's no game, redirect to 404
+  if (!games.has(req.params.uuid)) {
+    res.redirect('/404');
+  }
+
   const game = games.get(req.params.uuid);
 
   if (game.isWon()) {
