@@ -49,7 +49,7 @@ module.exports = class InMemoryGameHolder {
     console.log('Cleaning up games');
     const now = Date.now();
     this.games = new Map([...this.games].filter(([uuid, game]) => {
-      return now - game.timestamp <= this.lifetime;
+      return now - game.timestamp <= this.lifespan;
     }));
   }
 }
