@@ -67,7 +67,7 @@ module.exports = class Game {
       this.guessedLetters.add(guess.toUpperCase());
     } else {
       console.log('Received illegal guess ' + guess);
-      throw new Error('Illegal Guess'); // TODO: improve erroring here
+      throw new Error('Illegal Guess'); 
     }
   }
 
