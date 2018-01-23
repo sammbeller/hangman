@@ -1,4 +1,3 @@
-
 module.exports = class Game {
   /**
    * Sole constructor for the game class
