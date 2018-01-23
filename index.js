@@ -179,4 +179,4 @@ app.get('/404', (req, res) => {
   res.send('Sorry, the requested game does not exist. It may have been cleaned up.');
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+app.listen(3000, () => console.log('Let\'s Play Hangman!!'));
