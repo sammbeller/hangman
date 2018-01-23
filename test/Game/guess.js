@@ -12,7 +12,7 @@ describe('Game', () => {
   describe('guess()', () => {
     // Test some random input
     it('Correctly registers guesses in the guessedLetters set', () => {
-      const game = new Game('word');
+      const game = new Game('WORD');
       // Get 10 random letters to guess
       const guesses = new Set([]);
       for (let i = 1; i <= 10; i++) {
@@ -26,7 +26,7 @@ describe('Game', () => {
 
     // Test lower case input
     it('Accepts the lower case versions of letters in the alphabet', () => {
-      const game = new Game('word');
+      const game = new Game('WORD');
       // Get 10 random letters to guess
       const guesses = new Set([]);
       for (let i = 1; i <= 10; i++) {
@@ -40,7 +40,7 @@ describe('Game', () => {
 
     // Test bad input
     it('Throws an error when receiving input not in the alphabet', () => {
-      const game = new Game('word');
+      const game = new Game('WORD');
       assert.throws(() => game.guess('a', new Set([])), null, 'An error should be thrown when receiving a guess not in the alphabet');
     });
   });
