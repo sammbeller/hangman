@@ -73,8 +73,13 @@ module.exports = class Game {
   /**
    * Test if a game is won. Does not update the game
    *
-   * @returns {boolean} - True if all characters in this.word are contained in this.guessedLetters  */
+   * @returns {boolean} - False if the this.isLost(), 
+   *  true if all characters in this.word are contained in this.guessedLetters, else false
+   */
   isWon() {
+    if (this.isLost()) {
+      return false;
+    }
     return this.word.split('')
       .reduce((accumulator, currentValue) => { 
         return accumulator && this.guessedLetters.has(currentValue);
