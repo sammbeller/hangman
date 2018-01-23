@@ -127,7 +127,7 @@ app.get('/game/:uuid', (req, res) => {
   if (game.isWon()) {
     res.send('You won! The word was ' + game.word + ". Games won: " + games_won);
   } else if (game.isLost()) {
-    res.send('You lost! The word was ' + game.word) + ". Games lost: " + games_lost;
+    res.send('You lost! The word was ' + game.word + ". Games lost: " + games_lost);
   } else {
      res.render('game.pug', {
       displayWord: game.renderDisplayWord(),
