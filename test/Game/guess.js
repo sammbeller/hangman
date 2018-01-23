@@ -8,7 +8,7 @@ const alphabet = new Set(['A','B','C','D','E','F','G','H',
                           'Y','Z']);
 
 
-describe('Game', () => {
+module.exports = () => {
   describe('guess()', () => {
     // Test some random input
     it('Correctly registers guesses in the guessedLetters set', () => {
@@ -44,4 +44,4 @@ describe('Game', () => {
       assert.throws(() => game.guess('a', new Set([])), null, 'An error should be thrown when receiving a guess not in the alphabet');
     });
   });
-});
+}

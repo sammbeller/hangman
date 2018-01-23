@@ -7,7 +7,7 @@ const alphabet = new Set(['A','B','C','D','E','F','G','H',
                           'Q','R','S','T','U','V','W','X',
                           'Y','Z']);
 
-describe('Game', () => {
+module.exports = () => {
   describe('isWon()', () => {
     // Make sure the game is won when all letters in the word are guessed
     it('Is won when all letters in the word are guessed', () => {
@@ -30,4 +30,4 @@ describe('Game', () => {
       assert(!game.isWon(), 'Game should not be won');
     });
   });
-});
+}
