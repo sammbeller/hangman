@@ -1,7 +1,14 @@
 # INSTALLATION
 This app uses npm version 5.6.0 and node version 8.9.0
-You may install these however you wish or via the included install.sh script which may be invoked as su
-- sudo ./install.sh
+You may install these however you wish. It is reccomended to use nvm, however you can also go to nodejs.org and download the LTS distribution
+
+Next clone or download this repository to a suitable location
+e.g. `git clone https://github.com/sammbeller/hangman.git`
+
+Finally, navigate into the directory and run `npm install`
+
+# TO RUN
+simply call `node index.js`
 
  
 # TODO
