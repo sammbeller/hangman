@@ -4,5 +4,8 @@
  */
 describe('Game', () => {
   require('./guess')();
+  require('./getUnguessedLetters')();
+  require('./getMissedGuesses')();
   require('./isWon')();
+  require('./isLost')();
 });
