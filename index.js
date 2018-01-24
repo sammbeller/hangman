@@ -172,18 +172,12 @@ app.post('/game/:uuid', (req, res) => {
         games_lost++;
       }
     } catch (e) { // Received an invalid guess
-      res.redirect('/400');
+      res.status(400);
+      res.send('You tried to make an illegal guess!');
+      return;
     }
   }
   res.redirect('/game/'+req.params.uuid);
-});
-
-/**
- * ERROR PAGES
- */
-app.get('/400', (req, res) => {
-  res.status(400);
-  res.send('You tried to make an illegal guess!');
 });
 
 app.listen(3000, () => console.log('Let\'s Play Hangman!!'));
