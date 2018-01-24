@@ -143,12 +143,18 @@ app.get('/game/:uuid', (req, res) => {
   }
 
   if (game.isWon()) {
+    if (req.cookies.game === req.params.uuid) {
+      res.clearCookie('game');
+    }
     res.render('win.pug', {
       word: game.word,
       gamesWon: games_won,
       gamesLost: games_lost
     });
   } else if (game.isLost()) {
+    if (req.cookies.game === req.params.uuid) {
+      res.clearCookie('game');
+    }
     res.render('win.pug', {
       word: game.word,
       gamesWon: games_won,
