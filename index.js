@@ -80,9 +80,9 @@ app.get('/game', (req, res) => {
 app.get('/game/:uuid', (req, res) => {
   console.log('Received request for ' + req.url);
 
-  // If there's no game, redirect to 404
   if (!games.has(req.params.uuid)) {
-    res.redirect('/404');
+    res.status(404);
+    res.send('Sorry, the requested game does not exist. It may have been cleaned up.');
   }
 
   const game = games.get(req.params.uuid);
@@ -150,9 +150,9 @@ app.get('/game/:uuid', (req, res) => {
  */
 app.post('/game/:uuid', (req, res) => {
 
-  // If there's no game, redirect to 404
   if (!games.has(req.params.uuid)) {
-    res.redirect('/404');
+    res.status(404);
+    res.send('Sorry, the requested game does not exist. It may have been cleaned up.');
   }
 
   const game = games.get(req.params.uuid);
@@ -184,11 +184,6 @@ app.post('/game/:uuid', (req, res) => {
 app.get('/400', (req, res) => {
   res.status(400);
   res.send('You tried to make an illegal guess!');
-});
-
-app.get('/404', (req, res) => {
-  res.status(404);
-  res.send('Sorry, the requested game does not exist. It may have been cleaned up.');
 });
 
 app.listen(3000, () => console.log('Let\'s Play Hangman!!'));
