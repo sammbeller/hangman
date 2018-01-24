@@ -34,17 +34,6 @@ let games_lost = 0;
 setInterval(games.cleanup.bind(games), game_lifetime);
 
 /**
- * Initialize a new game object with the given uuid and word
- *
- * @param {string} uuid - A uuid to associate with a given game
- * @param {string} word - The word to be guessed in this new game
- */
-const startGame = (uuid, word) => {
-  console.log("Starting game with uuid " + uuid);
-  games.add(uuid, new Game(word));
-};
-
-/**
  * Request for favicon, respond with nothing
  */
 app.get('/favicon.ico', (req, res) => {
@@ -71,7 +60,9 @@ app.get('/game', (req, res) => {
 
   const uuid = uuidV4();
   const word = words.getRandomWord();
-  startGame(uuid, word);
+  // Start a new game
+  console.log("Starting game with uuid " + uuid);
+  games.add(uuid, new Game(word));
   res.cookie('game', uuid);
   res.redirect('/game/'+uuid);
 });
@@ -148,7 +139,7 @@ app.get('/game/:uuid', (req, res) => {
     if (req.cookies.game === req.params.uuid) {
       res.clearCookie('game');
     }
-    res.render('win.pug', {
+    res.render('lost.pug', {
       word: game.word,
       gamesWon: games_won,
       gamesLost: games_lost
