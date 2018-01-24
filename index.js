@@ -1,6 +1,7 @@
 // Imports
 const express = require('express');
 const uuidV4 = require('uuid/v4'); // Random uuid
+const CookieParser = require('cookie-parser');
 const Game = require('./src/Game');
 const GameHolder = require('./src/InMemoryGameHolder');
 const WordAccessor = require('./src/InMemoryWordAccessor');
@@ -9,6 +10,7 @@ const app = express();
 app.set('view engine', 'pug');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('static'));
+app.use(CookieParser());
 
 // Game Variables
 // The GameHolder object that will hold all games
@@ -68,9 +70,16 @@ app.get('/', (req,res) => {
  */
 app.get('/game', (req, res) => {
   console.log('Received request for ' + req.url);
+  // Check if there's a game in the cookie and redirect if there is
+  if (req.cookies.game) {
+    res.redirect('/game/'+req.cookies.game);
+    return;
+  }
+
   const uuid = uuidV4();
   const word = getNewWord();
   startGame(uuid, word);
+  res.cookie('game', uuid);
   res.redirect('/game/'+uuid);
 });
 
@@ -80,7 +89,16 @@ app.get('/game', (req, res) => {
 app.get('/game/:uuid', (req, res) => {
   console.log('Received request for ' + req.url);
 
+  // Check if there's a game in the cookie and redirect if there is
+  if (req.cookies.game && req.cookies.game !== req.params.uuid) {
+    res.redirect('/game/'+req.cookies.game);
+    return;
+  }
+
   if (!games.has(req.params.uuid)) {
+    if (req.cookies.game === req.params.uuid) {
+      res.clearCookie('game');
+    }
     res.status(404);
     res.send('Sorry, the requested game does not exist. It may have been cleaned up.');
   }
@@ -151,6 +169,9 @@ app.get('/game/:uuid', (req, res) => {
 app.post('/game/:uuid', (req, res) => {
 
   if (!games.has(req.params.uuid)) {
+    if (req.cookies.game === req.params.uuid) {
+      res.clearCookie('game');
+    }
     res.status(404);
     res.send('Sorry, the requested game does not exist. It may have been cleaned up.');
   }

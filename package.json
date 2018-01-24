@@ -9,6 +9,7 @@
   "author": "sbeller",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "pug": "^2.0.0-rc.4",
     "uuid": "^3.2.1"
