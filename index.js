@@ -125,10 +125,17 @@ app.get('/game/:uuid', (req, res) => {
   }
 
   if (game.isWon()) {
-    res.send('You won! The word was ' + game.word + ". Games won: " + games_won);
+    res.render('win.pug', {
+      word: game.word,
+      gamesWon: games_won,
+      gamesLost: games_lost
+    });
   } else if (game.isLost()) {
-    res.send('You lost! The word was ' + game.word + ". Games lost: " + games_lost);
-  } else {
+    res.render('win.pug', {
+      word: game.word,
+      gamesWon: games_won,
+      gamesLost: games_lost
+    });  } else {
      res.render('game.pug', {
       displayWord: game.renderDisplayWord(),
       unguessedLetters: [...game.getUnguessedLetters(alphabet)],
