@@ -34,13 +34,6 @@ let games_lost = 0;
 setInterval(games.cleanup.bind(games), game_lifetime);
 
 /**
- * Generate a new word
- */
-const getNewWord = () => {
-  return words.getRandomWord();
-};
-
-/**
  * Initialize a new game object with the given uuid and word
  *
  * @param {string} uuid - A uuid to associate with a given game
@@ -77,7 +70,7 @@ app.get('/game', (req, res) => {
   }
 
   const uuid = uuidV4();
-  const word = getNewWord();
+  const word = words.getRandomWord();
   startGame(uuid, word);
   res.cookie('game', uuid);
   res.redirect('/game/'+uuid);
