@@ -9,7 +9,7 @@ html
     h1= missedGuesses
     h1= displayWord
     form(action='' method='post')
-      select(name='guess')
+      select(name='guess' tabindex=1 autofocus)
         each letter in unguessedLetters
           option(value=letter) #{letter}
         input(type='submit')
